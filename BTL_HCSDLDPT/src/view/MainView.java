@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import control.Execute;
+import control.ExecuteWithKMean;
 
 import java.awt.Color;
 import javax.swing.JScrollPane;
@@ -34,6 +35,7 @@ public class MainView extends JFrame {
 	private JTextField txtContentSearch;
 	private int stt = 0;
 	private Execute ex = new Execute();
+	ExecuteWithKMean exe = new ExecuteWithKMean();
 
 	/**
 	 * Launch the application.
@@ -56,15 +58,15 @@ public class MainView extends JFrame {
 	 */
 	public MainView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1389, 793);
+		setBounds(100, 100, 1389, 970);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblTitle = new JLabel("Demo truy van anh");
+		JLabel lblTitle = new JLabel("Hệ thống truy vấn ảnh");
 		lblTitle.setFont(new Font("Tahoma", Font.BOLD, 23));
-		lblTitle.setBounds(490, 11, 234, 49);
+		lblTitle.setBounds(579, 11, 284, 49);
 		contentPane.add(lblTitle);
 		
 		JPanel panelQuery = new JPanel();
@@ -72,7 +74,7 @@ public class MainView extends JFrame {
 		contentPane.add(panelQuery);
 		panelQuery.setLayout(null);
 		
-		JButton btnChooseFile = new JButton("Chon file");
+		JButton btnChooseFile = new JButton("Chọn file");
 		btnChooseFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser jFileChooser = new JFileChooser();
@@ -97,56 +99,94 @@ public class MainView extends JFrame {
 		contentPane.add(btnChooseFile);
 		
 		txtContentSearch = new JTextField();
+		txtContentSearch.setEditable(false);
 		txtContentSearch.setBounds(198, 64, 739, 36);
 		contentPane.add(txtContentSearch);
 		txtContentSearch.setColumns(10);
 		
 		JPanel panelResult = new JPanel();
-		panelResult.setBounds(449, 122, 895, 598);
+		panelResult.setBounds(449, 122, 895, 774);
 		contentPane.add(panelResult);
 		panelResult.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 895, 603);
+		scrollPane.setBounds(0, 0, 895, 774);
 		panelResult.add(scrollPane);
 		
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
 		panel.setLayout(null);
 		
-		JLabel imgResult = new JLabel("");
+		JLabel imgResult1 = new JLabel("");
 		//imgResult.setIcon(new ImageIcon("E:\\laptrinhjava\\luyentap java\\DemoOpenCV\\out.png"));
-		imgResult.setBounds(10, 11, 418, 275);
-		panel.add(imgResult);
+		imgResult1.setBounds(10, 11, 418, 362);
+		panel.add(imgResult1);
 		
-		JLabel imgMatch = new JLabel("");
+		JLabel imgResult3 = new JLabel("");
 		//imgMatch.setIcon(new ImageIcon("E:\\laptrinhjava\\luyentap java\\DemoOpenCV\\matchoutput.jpg"));
-		imgMatch.setBounds(39, 299, 774, 278);
-		panel.add(imgMatch);
+		imgResult3.setBounds(10, 399, 418, 362);
+		panel.add(imgResult3);
 		
-		JLabel imageCover = new JLabel("");
+		JLabel imageResult2 = new JLabel("");
 		//imageCover.setIcon(new ImageIcon("E:\\laptrinhjava\\luyentap java\\DemoOpenCV\\img.jpg"));
-		imageCover.setBounds(463, 11, 430, 275);
-		panel.add(imageCover);
+		imageResult2.setBounds(465, 11, 418, 318);
+		panel.add(imageResult2);
+		
+		JLabel imgResult4 = new JLabel("");
+		imgResult4.setBounds(465, 399, 418, 362);
+		panel.add(imgResult4);
+		
+		imgResult1.setVerticalTextPosition(JLabel.BOTTOM);
+		imgResult1.setHorizontalTextPosition(JLabel.CENTER);
+		
+		imageResult2.setVerticalTextPosition(JLabel.BOTTOM);
+		imageResult2.setHorizontalTextPosition(JLabel.CENTER);
+		
+		imgResult3.setVerticalTextPosition(JLabel.BOTTOM);
+		imgResult3.setHorizontalTextPosition(JLabel.CENTER);
+		
+		imgResult4.setVerticalTextPosition(JLabel.BOTTOM);
+		imgResult4.setHorizontalTextPosition(JLabel.CENTER);
+
+		
+		JLabel info = new JLabel("");
 		
 		JButton btnPrev = new JButton("Trước");
 		JButton btnNext = new JButton("Sau");
-		
-		JButton btnSearch = new JButton("Tim kiem");
+		//button search
+		JButton btnSearch = new JButton("Tìm kiếm");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				String query = txtContentSearch.getText();
 				if(query==null | query.trim().equals("")) {
 					JOptionPane.showMessageDialog(null, "Chưa có nội dung tìm kiếm");
 				}else {
+//					ex = new Execute();
+//					ex.executeQuery(txtContentSearch.getText());
+//					stt = ex.showResultQuery(imgResult,imageCover,imgMatch,ex,0);
+//					btnPrev.setEnabled(false);
+//					if(ex.results.size()==0|ex.results.size()==1) {
+//						btnNext.setEnabled(false);
+//					}
 					
-					ex.executeQuery(txtContentSearch.getText());
-					stt = ex.showResultQuery(imgResult,imageCover,imgMatch,ex,0);
-					btnPrev.setEnabled(false);
-					if(ex.results.size()==0|ex.results.size()==1) {
-						btnNext.setEnabled(false);
+					stt = 0;
+					exe.ExcuteQuery(query);
+					if(exe.results.size() <= 0) {
+						//JOptionPane.showMessageDialog(null, "Không tìm thấy kết quả phù hợp");
+					}else {
+						int size = exe.results.size();
+						//JOptionPane.showMessageDialog(null, "Kích thước: "+exe.results.size());
+						int size1 = exe.results.size()>10?exe.results.size()/10:exe.results.size();
+//						for(int i = 0;i<size1;i++) {
+//							JOptionPane.showMessageDialog(null, exe.results.get(i).getPath());
+//						}
+						stt = exe.showResultQuery(imgResult1, imageResult2, imgResult3, imgResult4, stt, 0);
+						info.setText(stt+" trên "+size+" kết quả");
 					}
+					
 				}
+				
 			}
 		});
 		btnSearch.setBounds(952, 64, 120, 36);
@@ -174,29 +214,37 @@ public class MainView extends JFrame {
 		//phim truoc
 		btnPrev.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				stt  = ex.showResultQuery(imgResult, imageCover, imgMatch, ex, stt-1);
-				if(stt == 0) {
+				int size = exe.results.size();
+				stt  = exe.showResultQuery(imgResult1, imageResult2, imgResult3,imgResult4, stt,1);
+				btnNext.setEnabled(true);
+				if(stt <= 4) {
 					btnPrev.setEnabled(false);
 				}
-				btnNext.setEnabled(true);
+				info.setText(stt+" trên "+size+" kết quả");
 			}
 		});
-		btnPrev.setBounds(795, 731, 89, 23);
+		btnPrev.setBounds(791, 907, 89, 23);
 		contentPane.add(btnPrev);
 		
 		//phim sau
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				stt  = ex.showResultQuery(imgResult, imageCover, imgMatch, ex, stt+1);
-				if(stt == -1) {
-					btnNext.setEnabled(false);
-					stt = ex.results.size()-1;
-				}
+				int size = exe.results.size();
+				stt  = exe.showResultQuery(imgResult1, imageResult2, imgResult3,imgResult4, stt,0);
 				btnPrev.setEnabled(true);
+				if(stt == size) {
+					btnNext.setEnabled(false);
+				}
+				info.setText(stt+" trên "+size+" kết quả");
 			}
 		});
-		btnNext.setBounds(920, 731, 89, 23);
+		btnNext.setBounds(910, 907, 89, 23);
 		contentPane.add(btnNext);
+		
+		
+		info.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		info.setBounds(1048, 908, 201, 22);
+		contentPane.add(info);
 		
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);

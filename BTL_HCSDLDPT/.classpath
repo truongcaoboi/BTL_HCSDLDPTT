@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_201"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/opencv_2_4_9"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="E:/Tai_ve/java-core/java-json.jar"/>
+	<classpathentry kind="lib" path="E:/Tai_ve/java-core/ML/javaml-0.1.5/javaml-0.1.5.jar"/>
+	<classpathentry kind="lib" path="E:/Tai_ve/java-core/ML/javaml-0.1.7/javaml-0.1.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

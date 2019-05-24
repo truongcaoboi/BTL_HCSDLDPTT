@@ -67,20 +67,20 @@ public class Execute {
 		// Tính toán
 		description.compute(object, matKeyPoint, objectDescription);
 
-		// Luu anh keypoint
-		// Mat outputImage = new Mat(object.rows(), object.cols(),
-		// Highgui.CV_LOAD_IMAGE_COLOR);
-		//
-		// Scalar newKeypointColor = new Scalar(255, 0, 0);
-		//
-		//
-		//
-		// System.out.println("Drawing key points on object image...");
-		//
-		// Features2d.drawKeypoints(object, matKeyPoint, outputImage, newKeypointColor,
-		// 0);
-		//
-		// Highgui.imwrite("Keypoints\\"+new File(path).getName(), outputImage);
+		 //Luu anh keypoint
+//		 Mat outputImage = new Mat(object.rows(), object.cols(),
+//		 Highgui.CV_LOAD_IMAGE_COLOR);
+//		
+//		 Scalar newKeypointColor = new Scalar(255, 0, 0);
+//		
+//		
+//		
+//		 System.out.println("Drawing key points on object image...");
+//		
+//		 Features2d.drawKeypoints(object, matKeyPoint, outputImage, newKeypointColor,
+//		 0);
+//		
+//		 Highgui.imwrite("Keypoints\\"+new File(path).getName(), outputImage);
 		return objectDescription;
 	}
 
@@ -97,7 +97,7 @@ public class Execute {
 
 		LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
-		float nndrRatio = 0.7f;
+		float nndrRatio = 0.8f;
 
 		for (int i = 0; i < matches.size(); i++) {
 
@@ -117,13 +117,13 @@ public class Execute {
 
 		}
 		//(int) Math.sqrt(matches.size()) / 2
-		if (goodMatchesList.size() >= 50) {
+		if (goodMatchesList.size() >= (int) Math.sqrt(matches.size()) / 2) {
 			Image im = new Image();
 			im.setPath(path);
 			im.setMatches(goodMatchesList.size());
 			results.add(im);
-			// System.err.println("wow. Congratulate! It compare with "+path+" and
-			// "+img.getMatches());
+			 System.err.println("wow. Congratulate! It compare with "+path);
+			 //"+img.getMatches());
 
 			// Luu anh matching
 			
@@ -218,7 +218,7 @@ public class Execute {
 		}
 	}
 
-	public int showResultQuery(JLabel imgResult,JLabel imgCover,JLabel imgMatch,Execute ex,int stt) {
+	public int showResultQuery(JLabel imgResult1,JLabel imgResult2,JLabel imgResult3,JLabel imgResult4,Execute ex,int stt) {
 		Vector<Image> results = ex.results;
 		if (results.size() == 0) {
 			JOptionPane.showMessageDialog(null, "Không có kết quả");
@@ -226,9 +226,14 @@ public class Execute {
 		} else {
 			String path = results.get(stt).getPath();
 			String name = new File(path).getName();
-			imgResult.setIcon(new ImageIcon("Database\\"+name));
-			imgCover.setIcon(new ImageIcon("Matches\\cover_"+name));
-			imgMatch.setIcon(new ImageIcon("Matches\\match_"+name));
+			imgResult1.setIcon(null);
+			imgResult2.setIcon(null);
+			imgResult3.setIcon(null);
+			imgResult4.setIcon(null);
+			imgResult1.setIcon(new ImageIcon("Database\\"+name));
+			imgResult2.setIcon(new ImageIcon("Matches\\cover_"+name));
+			imgResult3.setIcon(new ImageIcon("Matches\\match_"+name));
+			imgResult4.setIcon(new ImageIcon("Matches\\match_"+name));
 		}
 		if(stt == results.size()-1) {
 			return -1;
@@ -277,7 +282,7 @@ public class Execute {
 			String path = f.getPath();
 			Mat dataDescription = this.detectAndCompute(path);
 			this.compare(objectDescription, dataDescription, path,pathImageQuery);
-			// System.out.println("end compare with: "+path);
+			 //System.out.println("end compare with: "+path);
 		}
 		
 		this.sortResult();
@@ -295,7 +300,7 @@ public class Execute {
 			Highgui.imencode(".jpg", mat, mob);
 			ba = mob.toArray();
 			BufferedImage image = ImageIO.read(new ByteArrayInputStream(ba));
-			System.out.println(image);
+			//System.out.println(image);
 			return image;
 		} catch (IOException e) {
 			System.out.println("loi r ban oi");
@@ -305,6 +310,7 @@ public class Execute {
 	}
 
 	private void sortResult() {
+		//System.out.println("co: "+results.size());
 		Vector<Image> sort = new Vector<Image>();
 		int matchs = 0;
 		Image node = null;
@@ -320,5 +326,6 @@ public class Execute {
 			matchs = 0;
 		}
 		results = sort;
+		//System.out.println("có: "+results.size());
 	}
 }
